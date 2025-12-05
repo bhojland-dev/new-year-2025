@@ -1,0 +1,7 @@
+.kirby-line-clamp {
+  /* stylelint-disable value-no-vendor-prefix */
+  display: -webkit-box;
+  -webkit-line-clamp: var(--line-clamp, none);
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}

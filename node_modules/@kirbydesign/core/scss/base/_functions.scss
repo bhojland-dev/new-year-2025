@@ -1,0 +1,255 @@
+@use 'sass:list';
+@use 'sass:map';
+@use 'sass:math';
+@use 'sass:meta';
+@use 'sass:string';
+@use '../themes/colors';
+@use 'variables';
+
+@function _get-map-prop($map, $key) {
+  @if map.has-key($map, $key) {
+    @return map.get($map, $key);
+  }
+
+  @error 'Unknown key `#{$key}`.';
+  @return null;
+}
+
+@function size($key: 'm') {
+  $negative: string.index($key, '-') == 1;
+  @if $negative {
+    $key: string.slice($key, 2, -1);
+  }
+
+  $value: _get-map-prop(variables.$sizes, $key);
+  @return if($negative, string.unquote('-' + $value), $value);
+}
+
+@function z($key) {
+  @return _get-map-prop(variables.$z-layers, $key);
+}
+
+@function font-size($key: 'n') {
+  @if $key == 'display' {
+    @warn 'Display key is deprecated';
+  }
+  @return _get-map-prop(variables.$font-sizes, $key);
+}
+
+@function line-height($key: 'm') {
+  @return _get-map-prop(variables.$line-height, $key);
+}
+
+@function font-weight($key: 'normal') {
+  @return _get-map-prop(variables.$font-weight, $key);
+}
+
+@function icon-font-size($size) {
+  @return map.get(variables.$icon-font-sizes, $size);
+}
+
+@function get-color($variant, $getValueOnly: false, $map: colors.$kirby-colors) {
+  $value: _get-map-prop($map, $variant);
+  @if $getValueOnly == true {
+    @return $value;
+  } @else {
+    @return string.unquote('var(--kirby-' + $variant + ')');
+  }
+}
+
+@function get-text-color($variant, $getValueOnly: false, $map: colors.$text-colors) {
+  $value: _get-map-prop($map, $variant);
+  @if $getValueOnly == true {
+    @return $value;
+  } @else {
+    @return string.unquote('var(--kirby-text-color-' + $variant + ')');
+  }
+}
+
+@function get-decoration-color($variant, $shade) {
+  $value: map.get(colors.$decoration-colors, $variant, $shade);
+  @return string.unquote('var(--kirby-decoration-color-' + $variant + '-' + $shade + ')');
+}
+
+@function border-radius($value) {
+  @return map.get(variables.$border-radii, $value);
+}
+
+@function get-elevation($value) {
+  @return map.get(variables.$elevations, $value);
+}
+
+@function get-transition-duration($value) {
+  @return map.get(variables.$transition-durations, $value);
+}
+
+@function get-transition-easing($value) {
+  @return map.get(variables.$transition-easings, $value);
+}
+
+@function get-shadow-size($elevation) {
+  $shadow-size: 0;
+  $shadow-list: map.get(variables.$elevations, $elevation);
+  @each $shadow in $shadow-list {
+    $offset-x: math.abs(_get-shadow-value($shadow, 'offset-x'));
+    $offset-y: math.abs(_get-shadow-value($shadow, 'offset-y'));
+    $blur-radius: _get-shadow-value($shadow, 'blur-radius');
+    $spread-radius: _get-shadow-value($shadow, 'spread-radius');
+    $current-shadow-size: math.max($offset-x, $offset-y) + $blur-radius + $spread-radius;
+    $shadow-size: math.max($shadow-size, $current-shadow-size);
+  }
+  @return $shadow-size;
+}
+
+@function get-page-content-max-width($value) {
+  @return map.get(variables.$page-content-max-widths, $value);
+}
+
+@function _get-shadow-value($shadow, $valuekey) {
+  $shadow-value-map: (
+    'offset-x': 1,
+    'offset-y': 2,
+    'blur-radius': 3,
+    'spread-radius': 4,
+  );
+  $value-index: map.get($shadow-value-map, $valuekey);
+  @return list.nth($shadow, $value-index);
+}
+
+/**
+ * Outputs all keys from map as CSS class selector list
+ */
+@function keys-to-classes($map) {
+  $classes: ();
+  @each $key in map.keys($map) {
+    $classes: list.append($classes, '.#{$key}', $separator: comma);
+  }
+  @return $classes;
+}
+
+@mixin slotted($selectors...) {
+  /* stylelint-disable-next-line selector-pseudo-element-no-unknown */
+  ::ng-deep > {
+    #{$selectors} {
+      @content;
+    }
+  }
+}
+
+/// Only apply the :hover selector and styles if pointer device can hover
+/// (effectively desktop/mouse devices):
+@mixin hover() {
+  @media (hover: hover) {
+    &:hover {
+      @content;
+    }
+  }
+}
+
+// Only apply the :focus selector and styles if pointer device can hover
+// (effectively desktop/mouse devices):
+@mixin focus() {
+  @media (hover: hover) {
+    &:focus {
+      @content;
+    }
+  }
+}
+
+// Only apply the styles on touch devices
+// No check for `hover: none`, as Samsung Galaxy will return false on `hover: none` media query
+@mixin touch() {
+  @media (pointer: coarse) {
+    @content;
+  }
+}
+
+// Only apply the styles on non touch devices
+// (fine pointer and hover):
+@mixin not-touch() {
+  @media (hover: hover) and (pointer: fine) {
+    @content;
+  }
+}
+
+// Ensure minimum click area (default 44 x 44 px)
+// Ignore rounded corners to ensure square click area
+@mixin accessible-target-size($width: variables.$fat-finger-size, $height: $width) {
+  // Wrap declarations to avoid clashes with other mixins that have nested rules.
+  // See: https://sass-lang.com/documentation/breaking-changes/mixed-decls/
+  & {
+    position: relative;
+  }
+
+  &::after {
+    content: '';
+    position: absolute;
+    min-height: $height;
+    min-width: $width;
+    width: 100%;
+    height: 100%;
+    transform: translate(-50%, -50%);
+    left: 50%;
+    top: 50%;
+  }
+}
+
+/*
+* This mixin is applied both in the section-header styles, for using 
+* headings and paragraphs directly, and in kirby-label styles, for 
+* wrapping them in a kirby-label within a section-header. 
+*/
+
+@mixin section-header-typography() {
+  --padding-end: #{size('s')};
+  --padding-start: #{size('s')};
+
+  @include slotted('[heading]') {
+    font-weight: font-weight('bold');
+    font-size: font-size('m');
+    line-height: line-height('m');
+    color: var(--kirby-section-header-color);
+    margin: 0;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @include slotted('[detail]', '[label]') {
+    font-weight: font-weight('light');
+    font-size: font-size('s');
+    line-height: line-height('s');
+    color: var(--kirby-section-header-color);
+    margin: size('xxxs') 0 size('xxs');
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  @include slotted('[wrap]') {
+    white-space: normal;
+  }
+}
+
+@mixin trailing-icon($svg: 'link') {
+  $icon-scaling-factor: 1.5em;
+
+  @if string.index($svg, 'http') {
+    // External icon
+    background-image: url('#{$svg}');
+  } @else {
+    // Icon from library
+    $icon-url: 'assets/kirby/icons/svg/#{$svg}.svg';
+
+    background-image: url('/#{$icon-url}'); // fallback for older browsers that don't support "image-set()"
+    background-image: image-set('#{$icon-url}');
+  }
+
+  white-space: nowrap;
+  background-repeat: no-repeat;
+  background-position: right 50%;
+  background-size: $icon-scaling-factor;
+
+  // Place icon to the right of text, with icons own width + the actual spacing
+  padding-right: calc(#{$icon-scaling-factor} + #{size('xxxs')});
+}

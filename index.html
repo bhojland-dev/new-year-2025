@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nytårsmenu – Afstemning</title>
+  <style>
+    body {
+      font-family: "SF Compact Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #ffffff;
+      padding: 40px;
+      text-align: center;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+      font-size: 28px;
+    }
+
+    p {
+      font-size: 18px;
+      margin-bottom: 20px;
+    }
+
+    .name-row {
+      width: 500px;
+      margin: 0 auto 24px auto;
+      text-align: left;
+      font-size: 18px;
+    }
+
+    .name-row label {
+      display: block;
+      margin-bottom: 6px;
+      font-weight: 600;
+    }
+
+    .name-row input {
+      width: 100%;
+      padding: 8px 10px;
+      font-size: 18px;
+      border-radius: 8px;
+      border: 1px solid #ccc;
+      box-sizing: border-box;
+    }
+
+    .item {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 500px;
+      padding: 12px 20px;
+      margin: 12px auto;
+      background: #f5f5f5;
+      border-radius: 12px;
+      font-size: 24px;
+      box-sizing: border-box;
+    }
+
+    .label {
+      flex-grow: 1;
+      text-align: left;
+    }
+
+    .points {
+      display: flex;
+      gap: 10px;
+    }
+
+    .point-btn {
+      width: 60px;
+      height: 50px;
+      border-radius: 20px;
+      background: #252F3E;
+      color: #F6CE6E;
+      border: 2px solid transparent;
+      font-size: 20px;
+      cursor: pointer;
+    }
+
+    .point-btn.selected {
+      border-color: #FF5E20;
+      border-width: 4px;
+    }
+
+    #submit-btn {
+      width: 420px;
+      padding: 16px 0;
+      margin-top: 25px;
+      background: #252F3E;
+      color: #F6CE6E;
+      border: none;
+      border-radius: 20px;
+      font-size: 22px;
+      cursor: pointer;
+    }
+
+    #submit-btn:disabled {
+      background: #cccccc;
+      color: #666666;
+      cursor: not-allowed;
+    }
+
+    #status {
+      margin-top: 20px;
+      font-size: 18px;
+    }
+
+    #status.ok { color: #16a34a; }
+    #status.error { color: #dc2626; }
+
+    a.results-link {
+      display: inline-block;
+      margin-top: 16px;
+      font-size: 16px;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Nytårsmenu – afstemning</h1>
+  <p>Giv 3 point i alt: 3 til dit førstevalg, 2 til andetvalg og 1 til tredjevalg.</p>
+
+  <div class="name-row">
+    <label for="voter-name">Dit navn</label>
+    <input type="text" id="voter-name" placeholder="Skriv dit navn her" />
+  </div>
+
+  <div id="list">
+
+    <div class="item" data-id="fladbro">
+      <div class="label">Fladbro Kro</div>
+      <div class="points">
+        <button class="point-btn" data-value="1">1</button>
+        <button class="point-btn" data-value="2">2</button>
+        <button class="point-btn" data-value="3">3</button>
+      </div>
+    </div>
+
+    <div class="item" data-id="bistroteket">
+      <div class="label">Bistroteket</div>
+      <div class="points">
+        <button class="point-btn" data-value="1">1</button>
+        <button class="point-btn" data-value="2">2</button>
+        <button class="point-btn" data-value="3">3</button>
+      </div>
+    </div>
+
+    <div class="item" data-id="frularsen">
+      <div class="label">Fru Larsen</div>
+      <div class="points">
+        <button class="point-btn" data-value="1">1</button>
+        <button class="point-btn" data-value="2">2</button>
+        <button class="point-btn" data-value="3">3</button>
+      </div>
+    </div>
+
+    <div class="item" data-id="timvladimir">
+      <div class="label">Tim Vladimir</div>
+      <div class="points">
+        <button class="point-btn" data-value="1">1</button>
+        <button class="point-btn" data-value="2">2</button>
+        <button class="point-btn" data-value="3">3</button>
+      </div>
+    </div>
+
+    <div class="item" data-id="rebelsk">
+      <div class="label">Rebelsk</div>
+      <div class="points">
+        <button class="point-btn" data-value="1">1</button>
+        <button class="point-btn" data-value="2">2</button>
+        <button class="point-btn" data-value="3">3</button>
+      </div>
+    </div>
+
+    <div class="item" data-id="vesterport">
+      <div class="label">Vesterport Madmarked</div>
+      <div class="points">
+        <button class="point-btn" data-value="1">1</button>
+        <button class="point-btn" data-value="2">2</button>
+        <button class="point-btn" data-value="3">3</button>
+      </div>
+    </div>
+
+    <div class="item" data-id="norevent">
+      <div class="label">Norevent</div>
+      <div class="points">
+        <button class="point-btn" data-value="1">1</button>
+        <button class="point-btn" data-value="2">2</button>
+        <button class="point-btn" data-value="3">3</button>
+      </div>
+    </div>
+
+    <div class="item" data-id="rosengaarden">
+      <div class="label">Rosengaardens Gårdbutik</div>
+      <div class="points">
+        <button class="point-btn" data-value="1">1</button>
+        <button class="point-btn" data-value="2">2</button>
+        <button class="point-btn" data-value="3">3</button>
+      </div>
+    </div>
+  </div>
+
+  <button id="submit-btn" disabled>Indsend stemme</button>
+  <div id="status"></div>
+  <a class="results-link" href="results.html" target="_blank" rel="noopener">Se resultater</a>
+
+  <script>
+    const statusEl = document.getElementById("status");
+    const submitBtn = document.getElementById("submit-btn");
+    const nameInput = document.getElementById("voter-name");
+
+    function collectVotes() {
+      const allItems = document.querySelectorAll(".item");
+      let votes = {};
+      allItems.forEach(item => {
+        const id = item.getAttribute("data-id");
+        const selected = item.querySelector(".point-btn.selected");
+        if (selected) {
+          votes[id] = Number(selected.getAttribute("data-value"));
+        }
+      });
+      return votes;
+    }
+
+    function hasValidDistribution(votes) {
+      const keys = Object.keys(votes);
+      if (keys.length !== 3) return false;
+      const values = Object.values(votes);
+      const total = values.reduce((a, b) => a + b, 0);
+      if (total !== 6) return false;
+      return values.includes(3) && values.includes(2) && values.includes(1);
+    }
+
+    function updateSubmitState() {
+      const name = nameInput.value.trim();
+      const votes = collectVotes();
+      const valid = name.length > 0 && hasValidDistribution(votes);
+      submitBtn.disabled = !valid;
+    }
+
+    document.querySelectorAll(".point-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        const item = btn.closest(".item");
+        item.querySelectorAll(".point-btn").forEach(b => b.classList.remove("selected"));
+        btn.classList.add("selected");
+        updateSubmitState();
+      });
+    });
+
+    nameInput.addEventListener("input", updateSubmitState);
+
+    document.getElementById("submit-btn").addEventListener("click", async () => {
+      statusEl.textContent = "";
+      statusEl.className = "";
+
+      const name = nameInput.value.trim();
+      const votes = collectVotes();
+
+      if (!name || !hasValidDistribution(votes)) {
+        statusEl.textContent = "Ugyldig stemme – tjek navn og pointfordeling.";
+        statusEl.className = "error";
+        return;
+      }
+
+      const first = Object.keys(votes).find(k => votes[k] === 3);
+      const second = Object.keys(votes).find(k => votes[k] === 2);
+      const third = Object.keys(votes).find(k => votes[k] === 1);
+
+      try {
+        const response = await fetch("/api/vote", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ first, second, third, name })
+        });
+
+        if (!response.ok) throw new Error("Serverfejl");
+
+        statusEl.textContent = "Tak! Din stemme er gemt.";
+        statusEl.className = "ok";
+        document.querySelectorAll(".point-btn").forEach(b => b.classList.remove("selected"));
+        submitBtn.disabled = true;
+      } catch (err) {
+        statusEl.textContent = "Fejl – kunne ikke gemme stemme.";
+        statusEl.className = "error";
+      }
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html lang="da">
+<head>
+  <meta charset="UTF-8" />
+  <title>Nytårsmenu – Resultater</title>
+  <style>
+    body {
+      font-family: "SF Compact Display", -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background: #ffffff;
+      padding: 40px;
+    }
+
+    h1 {
+      font-size: 28px;
+      margin-bottom: 1rem;
+      text-align: center;
+    }
+
+    p {
+      text-align: center;
+      margin-bottom: 10px;
+    }
+
+    #summary {
+      text-align: center;
+      margin-bottom: 20px;
+      font-size: 16px;
+      color: #333;
+    }
+
+    table {
+      border-collapse: collapse;
+      margin: 0 auto;
+      min-width: 600px;
+      font-size: 18px;
+    }
+
+    th, td {
+      border: 1px solid #ddd;
+      padding: 8px 12px;
+      text-align: left;
+    }
+
+    th {
+      background: #252F3E;
+      color: #F6CE6E;
+    }
+
+    tr:nth-child(even) {
+      background: #f9f9f9;
+    }
+
+    #updated {
+      margin-top: 10px;
+      text-align: center;
+      font-size: 14px;
+      color: #555;
+    }
+
+    #reload-btn {
+      display: block;
+      margin: 0.5rem auto 1.5rem auto;
+      padding: 8px 16px;
+      border-radius: 16px;
+      border: none;
+      background: #252F3E;
+      color: #F6CE6E;
+      font-size: 16px;
+      cursor: pointer;
+    }
+  </style>
+</head>
+<body>
+
+  <h1>Nytårsmenu – resultater</h1>
+  <p>Samlede point og fordeling af 1., 2. og 3. prioriteter.</p>
+  <div id="summary"></div>
+
+  <button id="reload-btn">Opdater resultater</button>
+
+  <table id="results-table">
+    <thead>
+      <tr>
+        <th>Sted</th>
+        <th>Samlede point</th>
+        <th>1. prioriteter (3p)</th>
+        <th>2. prioriteter (2p)</th>
+        <th>3. prioriteter (1p)</th>
+      </tr>
+    </thead>
+    <tbody>
+    </tbody>
+  </table>
+
+  <div id="updated"></div>
+
+  <script>
+    async function loadResults() {
+      try {
+        const res = await fetch("/api/results");
+        if (!res.ok) throw new Error("Serverfejl");
+        const data = await res.json();
+
+        const tbody = document.querySelector("#results-table tbody");
+        tbody.innerHTML = "";
+
+        Object.values(data.options).forEach(row => {
+          const tr = document.createElement("tr");
+          tr.innerHTML = `
+            <td>${row.name}</td>
+            <td>${row.points}</td>
+            <td>${row.firstCount}</td>
+            <td>${row.secondCount}</td>
+            <td>${row.thirdCount}</td>
+          `;
+          tbody.appendChild(tr);
+        });
+
+        const summaryEl = document.getElementById("summary");
+        if (typeof data.totalVotes === "number") {
+          summaryEl.textContent = "Antal afgivne stemmer: " + data.totalVotes;
+        } else {
+          summaryEl.textContent = "";
+        }
+
+        const updatedEl = document.getElementById("updated");
+        const now = new Date();
+        updatedEl.textContent = "Sidst opdateret: " + now.toLocaleString("da-DK");
+      } catch (err) {
+        alert("Kunne ikke hente resultater.");
+      }
+    }
+
+    document.getElementById("reload-btn").addEventListener("click", loadResults);
+
+    loadResults();
+  </script>
+</body>
+</html>

@@ -1,0 +1,40 @@
+@use 'sass:color';
+@use '../utils';
+@use '../interaction-state';
+
+@mixin apply-dark-theme {
+  --kirby-inputs-background-color: var(--kirby-white-overlay);
+  --kirby-inputs-background-color-hover: var(--kirby-white-overlay-30);
+  --kirby-inputs-background-color-active: var(--kirby-white-overlay-40);
+  --kirby-inputs-color: var(--kirby-white);
+  --kirby-inputs-indicator-background-color: var(--kirby-white);
+  --kirby-inputs-indicator-color: var(--kirby-black);
+  --kirby-inputs-placeholder-color: var(--kirby-white-overlay-50);
+  --kirby-inputs-elevation: none;
+}
+
+@mixin apply-white-theme {
+  --kirby-inputs-background-color: var(--kirby-dark-overlay);
+  --kirby-inputs-background-color-hover: var(--kirby-dark-overlay-10);
+  --kirby-inputs-background-color-active: var(--kirby-dark-overlay-20);
+  --kirby-inputs-color: var(--kirby-black);
+  --kirby-inputs-indicator-background-color: var(--kirby-black);
+  --kirby-inputs-indicator-color: var(--kirby-white);
+  --kirby-inputs-placeholder-color: var(--kirby-semi-dark);
+  --kirby-inputs-elevation: none;
+  --kirby-divider-color: #{utils.get-color('background-color')};
+}
+
+@mixin apply-light-theme {
+  --kirby-inputs-background-color: var(--kirby-white);
+  --kirby-inputs-background-color-hover: var(--kirby-dark-overlay-10);
+  --kirby-inputs-background-color-active: var(--kirby-dark-overlay-20);
+  --kirby-inputs-color: var(--kirby-black);
+  --kirby-inputs-indicator-background-color: var(--kirby-black);
+  --kirby-inputs-indicator-color: var(--kirby-white);
+  --kirby-inputs-placeholder-color: var(--kirby-semi-dark);
+  --kirby-divider-color: #{utils.get-color('medium')};
+
+  // Only set elevation on input components for light theme
+  --kirby-inputs-elevation: var(--kirby-elevation-2);
+}
