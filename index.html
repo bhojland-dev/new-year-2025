@@ -64,6 +64,22 @@
     .points {
       display: flex;
       gap: 10px;
+      align-items: center; /* vertikal align ikon + knapper */
+    }
+
+    .link-icon {
+      font-size: 18px;
+      text-decoration: none;
+      color: #252F3E;
+      opacity: 0.8;
+      cursor: pointer;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+    }
+
+    .link-icon:hover {
+      opacity: 1;
     }
 
     .point-btn {
@@ -92,12 +108,34 @@
       border-radius: 20px;
       font-size: 22px;
       cursor: pointer;
+      position: relative;
+      overflow: hidden;
     }
 
     #submit-btn:disabled {
       background: #cccccc;
       color: #666666;
       cursor: not-allowed;
+    }
+
+    /* Spinner: cirkel der spinner, vises kun når knappen har .loading */
+    #submit-btn.loading::after {
+      content: "";
+      position: absolute;
+      right: 20px;
+      top: 50%;
+      width: 18px;
+      height: 18px;
+      border-radius: 50%;
+      border: 3px solid #F6CE6E;
+      border-top-color: transparent;
+      transform: translateY(-50%);
+      animation: spin 0.8s linear infinite;
+    }
+
+    @keyframes spin {
+      from { transform: translateY(-50%) rotate(0deg); }
+      to   { transform: translateY(-50%) rotate(360deg); }
     }
 
     #status {
@@ -107,12 +145,6 @@
 
     #status.ok { color: #16a34a; }
     #status.error { color: #dc2626; }
-
-    a.results-link {
-      display: inline-block;
-      margin-top: 16px;
-      font-size: 16px;
-    }
   </style>
 </head>
 <body>
@@ -126,10 +158,13 @@
   </div>
 
   <div id="list">
-
     <div class="item" data-id="fladbro">
       <div class="label">Fladbro Kro</div>
       <div class="points">
+        <a class="link-icon"
+           href="https://www.fladbrokro.dk/nytaarsmenu-fladbro-kro/"
+           target="_blank" rel="noopener"
+           aria-label="Åbn Fladbro Kros nytårsmenu i ny fane">🔗</a>
         <button class="point-btn" data-value="1">1</button>
         <button class="point-btn" data-value="2">2</button>
         <button class="point-btn" data-value="3">3</button>
@@ -139,6 +174,10 @@
     <div class="item" data-id="bistroteket">
       <div class="label">Bistroteket</div>
       <div class="points">
+        <a class="link-icon"
+           href="https://www.bistroteket.dk/nytaarsmenu-randers"
+           target="_blank" rel="noopener"
+           aria-label="Åbn Bistrotekets nytårsmenu i ny fane">🔗</a>
         <button class="point-btn" data-value="1">1</button>
         <button class="point-btn" data-value="2">2</button>
         <button class="point-btn" data-value="3">3</button>
@@ -148,6 +187,10 @@
     <div class="item" data-id="frularsen">
       <div class="label">Fru Larsen</div>
       <div class="points">
+        <a class="link-icon"
+           href="https://frularsen.dk/nytaarsmenu/"
+           target="_blank" rel="noopener"
+           aria-label="Åbn Fru Larsens nytårsmenu i ny fane">🔗</a>
         <button class="point-btn" data-value="1">1</button>
         <button class="point-btn" data-value="2">2</button>
         <button class="point-btn" data-value="3">3</button>
@@ -157,6 +200,10 @@
     <div class="item" data-id="timvladimir">
       <div class="label">Tim Vladimir</div>
       <div class="points">
+        <a class="link-icon"
+           href="https://timmvladimirskoekken.dk/privat/nytaarsmenu-2025/"
+           target="_blank" rel="noopener"
+           aria-label="Åbn Tim Vladimirs nytårsmenu i ny fane">🔗</a>
         <button class="point-btn" data-value="1">1</button>
         <button class="point-btn" data-value="2">2</button>
         <button class="point-btn" data-value="3">3</button>
@@ -166,6 +213,10 @@
     <div class="item" data-id="rebelsk">
       <div class="label">Rebelsk</div>
       <div class="points">
+        <a class="link-icon"
+           href="https://restaurantrebelsk.dk/nytaarsmenu-2025/"
+           target="_blank" rel="noopener"
+           aria-label="Åbn Rebelsks nytårsmenu i ny fane">🔗</a>
         <button class="point-btn" data-value="1">1</button>
         <button class="point-btn" data-value="2">2</button>
         <button class="point-btn" data-value="3">3</button>
@@ -175,6 +226,10 @@
     <div class="item" data-id="vesterport">
       <div class="label">Vesterport Madmarked</div>
       <div class="points">
+        <a class="link-icon"
+           href="https://www.facebook.com/Vesterportmadmarked2025/photos/så-er-vores-nytårsmenu-klar-for-bestilling-skal-bestilles-inden-d-2012-dog-med-f/1143766504544286/?_rdr"
+           target="_blank" rel="noopener"
+           aria-label="Åbn Vesterport Madmarkeds nytårsmenu i ny fane">🔗</a>
         <button class="point-btn" data-value="1">1</button>
         <button class="point-btn" data-value="2">2</button>
         <button class="point-btn" data-value="3">3</button>
@@ -184,6 +239,10 @@
     <div class="item" data-id="norevent">
       <div class="label">Norevent</div>
       <div class="points">
+        <a class="link-icon"
+           href="https://norevent.dk/vare/nytaarsmenu-2025/"
+           target="_blank" rel="noopener"
+           aria-label="Åbn Norevents nytårsmenu i ny fane">🔗</a>
         <button class="point-btn" data-value="1">1</button>
         <button class="point-btn" data-value="2">2</button>
         <button class="point-btn" data-value="3">3</button>
@@ -193,6 +252,10 @@
     <div class="item" data-id="rosengaarden">
       <div class="label">Rosengaardens Gårdbutik</div>
       <div class="points">
+        <a class="link-icon"
+           href="https://rosengaardens-gaardbutik.dk/menu/nytarsmenu/"
+           target="_blank" rel="noopener"
+           aria-label="Åbn Rosengaardens nytårsmenu i ny fane">🔗</a>
         <button class="point-btn" data-value="1">1</button>
         <button class="point-btn" data-value="2">2</button>
         <button class="point-btn" data-value="3">3</button>
@@ -202,7 +265,6 @@
 
   <button id="submit-btn" disabled>Indsend stemme</button>
   <div id="status"></div>
-  <a class="results-link" href="results.html" target="_blank" rel="noopener">Se resultater</a>
 
   <script>
     const statusEl = document.getElementById("status");
@@ -210,9 +272,8 @@
     const nameInput = document.getElementById("voter-name");
 
     function collectVotes() {
-      const allItems = document.querySelectorAll(".item");
-      let votes = {};
-      allItems.forEach(item => {
+      const votes = {};
+      document.querySelectorAll(".item").forEach(item => {
         const id = item.getAttribute("data-id");
         const selected = item.querySelector(".point-btn.selected");
         if (selected) {
@@ -222,20 +283,27 @@
       return votes;
     }
 
-    function hasValidDistribution(votes) {
+    function hasValidDistribution(votes, name) {
+      if (!name) return false;
+
       const keys = Object.keys(votes);
       if (keys.length !== 3) return false;
+
       const values = Object.values(votes);
       const total = values.reduce((a, b) => a + b, 0);
-      if (total !== 6) return false;
-      return values.includes(3) && values.includes(2) && values.includes(1);
+
+      return (
+        total === 6 &&
+        values.includes(1) &&
+        values.includes(2) &&
+        values.includes(3)
+      );
     }
 
     function updateSubmitState() {
       const name = nameInput.value.trim();
       const votes = collectVotes();
-      const valid = name.length > 0 && hasValidDistribution(votes);
-      submitBtn.disabled = !valid;
+      submitBtn.disabled = !hasValidDistribution(votes, name);
     }
 
     document.querySelectorAll(".point-btn").forEach(btn => {
@@ -256,7 +324,7 @@
       const name = nameInput.value.trim();
       const votes = collectVotes();
 
-      if (!name || !hasValidDistribution(votes)) {
+      if (!hasValidDistribution(votes, name)) {
         statusEl.textContent = "Ugyldig stemme – tjek navn og pointfordeling.";
         statusEl.className = "error";
         return;
@@ -266,25 +334,38 @@
       const second = Object.keys(votes).find(k => votes[k] === 2);
       const third = Object.keys(votes).find(k => votes[k] === 1);
 
+      // Start loading state + spinner
+      submitBtn.classList.add("loading");
+      submitBtn.disabled = true;
+
       try {
-        const response = await fetch("/api/vote", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ first, second, third, name })
-        });
+        const formData = new URLSearchParams();
+        formData.append("name", name);
+        formData.append("first", first);
+        formData.append("second", second);
+        formData.append("third", third);
 
-        if (!response.ok) throw new Error("Serverfejl");
+        await fetch(
+          "https://script.google.com/macros/s/AKfycbzAZIUmIkCj5L1tSX85nrHNVKGNgEU3t8cQdutwMQ926FidwMjGjDHS4XPC_AQocPQk/exec",
+          {
+            method: "POST",
+            body: formData,
+            mode: "no-cors"
+          }
+        );
 
-        statusEl.textContent = "Tak! Din stemme er gemt.";
+        statusEl.textContent = "Tak! Din stemme er gemt (tjek evt. arket).";
         statusEl.className = "ok";
-        document.querySelectorAll(".point-btn").forEach(b => b.classList.remove("selected"));
-        submitBtn.disabled = true;
       } catch (err) {
         statusEl.textContent = "Fejl – kunne ikke gemme stemme.";
         statusEl.className = "error";
+        // giver mulighed for at prøve igen ved fejl
+        submitBtn.disabled = false;
+      } finally {
+        // spinner væk uanset succes/fejl
+        submitBtn.classList.remove("loading");
       }
     });
   </script>
-
 </body>
 </html>
